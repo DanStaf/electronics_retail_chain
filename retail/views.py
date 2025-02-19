@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.exceptions import ValidationError
 from rest_framework.viewsets import ModelViewSet
 
@@ -10,6 +11,8 @@ class CompanyViewSet(ModelViewSet):
 
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['country']
 
     def perform_update(self, serializer):
 

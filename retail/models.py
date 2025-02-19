@@ -62,7 +62,7 @@ class Company(models.Model):
                                  verbose_name='Поставщик',
                                  on_delete=models.SET_NULL)
 
-    debt = models.FloatField(null=True, blank=True,
+    debt = models.FloatField(default=0.0,
                              verbose_name='Задолженность перед поставщиком')
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время создания')
