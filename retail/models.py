@@ -1,4 +1,5 @@
 from django.db import models
+from rest_framework.exceptions import ValidationError
 
 
 class Product(models.Model):
@@ -25,6 +26,7 @@ class Product(models.Model):
 class Company(models.Model):
     """
     Название.
+    Тип компании.
     Контакты:
         email,
         страна,
@@ -60,12 +62,33 @@ class Company(models.Model):
                                  verbose_name='Поставщик',
                                  on_delete=models.SET_NULL)
 
-    debt = models.FloatField(null=True, blank=True, verbose_name='Задолженность перед поставщиком')
+    debt = models.FloatField(null=True, blank=True,
+                             verbose_name='Задолженность перед поставщиком')
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время создания')
 
     def __str__(self):
         return f'Company: {self.title}'
+
+    def clean(self, *args, **kwargs):
+        # add custom validation here
+
+        if not self.supplier and not self.debt == 0:
+            raise ValidationError("Please fill 'Supplier' or clear 'Debt'")
+
+        if self.supplier:
+
+            grand_supplier = self.supplier.supplier
+            if grand_supplier and grand_supplier.supplier:
+                raise ValidationError("Company can't use this supplier (allowed only 2 retail levels)")
+
+        self.debt = round(self.debt, 2)
+
+        super().clean(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'компания'
