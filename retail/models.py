@@ -37,7 +37,15 @@ class Company(models.Model):
     Время создания (заполняется автоматически при создании).
     """
 
+    COMPANY_CHOICES = [
+        ("Завод", "Завод"),
+        ("Розничная сеть", "Розничная сеть"),
+        ("Индивидуальный предприниматель", "Индивидуальный предприниматель")
+    ]
+
     title = models.CharField(max_length=150, verbose_name='Название')
+
+    type = models.CharField(max_length=150, choices=COMPANY_CHOICES, verbose_name='Тип компании')
 
     email = models.EmailField(null=True, blank=True, verbose_name='E-mail')
     country = models.CharField(null=True, blank=True, max_length=50, verbose_name='Страна')
