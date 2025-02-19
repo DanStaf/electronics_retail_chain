@@ -5,10 +5,12 @@ from users.apps import UsersConfig
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from users.views import UserViewSet
+
 app_name = UsersConfig.name
 
-#router_user = routers.DefaultRouter()
-#router_user.register("", UserViewSet, basename='user')
+router_user = routers.DefaultRouter()
+router_user.register("", UserViewSet, basename='user')
 
 urlpatterns = [
 
@@ -17,4 +19,4 @@ urlpatterns = [
 
 ]
 
-#urlpatterns += router_user.urls
+urlpatterns += router_user.urls
