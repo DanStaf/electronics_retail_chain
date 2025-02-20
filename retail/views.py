@@ -5,6 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from retail.models import Company
 from retail.serializers import CompanySerializer
+from users.permissions import IsActiveClass
 
 
 class CompanyViewSet(ModelViewSet):
@@ -13,6 +14,7 @@ class CompanyViewSet(ModelViewSet):
     serializer_class = CompanySerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['country']
+    permission_classes = [IsActiveClass]
 
     def perform_update(self, serializer):
 
