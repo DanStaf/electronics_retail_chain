@@ -11,6 +11,6 @@ def clean_debt(modeladmin, request, queryset):
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ('title', 'supplier',)
+    list_display = ('title', 'supplier', )
     list_filter = ('city',)
     actions = [clean_debt]
